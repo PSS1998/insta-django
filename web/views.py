@@ -15,6 +15,9 @@ from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password, check_password
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
 
 from .models import User, Token, Account, Passwordresetcodes
 
@@ -41,28 +44,50 @@ random_str = lambda N: ''.join(
 
 # @csrf_exempt
 # @require_POST
-# def login(request):
-#     # check if POST objects has username and password
-#     if request.POST.has_key('username') and request.POST.has_key('password'):
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         this_user = get_object_or_404(User, username=username)
-#         if (check_password(password, this_user.password)):  # authentication
-#             this_token = get_object_or_404(Token, user=this_user)
-#             token = this_token.token
-#             context = {}
-#             context['result'] = 'ok'
-#             context['token'] = token
-#             # return {'status':'ok','token':'TOKEN'}
-#             return JsonResponse(context, encoder=JSONEncoder)
-#         else:
-#             context = {}
-#             context['result'] = 'error'
-#             # return {'status':'error'}
-#             return JsonResponse(context, encoder=JSONEncoder)
+redirect_to = '/dashboard/'
+def login_auth(request):
+    # check if POST objects has username and password
+    if 'username' in request.POST and 'password' in request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+        this_user = get_object_or_404(User, username=username)
+        if (check_password(password, this_user.password)):  # authentication
+            user = authenticate(request, username=username, password=password)
+            this_token = get_object_or_404(Token, user=this_user)
+            token = this_token.token
+            context = {}
+            context['result'] = 'ok'
+            context['token'] = token
+            # return {'status':'ok','token':'TOKEN'}
+            # return JsonResponse(context, encoder=JSONEncoder)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect(redirect_to)
+        else:
+            context = {}
+            context['result'] = 'error'
+            # return {'status':'error'}
+            return JsonResponse(context, encoder=JSONEncoder)
+    else:
+        context = {'message': ''}
+        return render(request, 'login.html', context)
 
+
+
+# @user_passes_test(login, login_url='/accounts/login/')
+#@permission_required('client.is_client', login_url='/dashboard-login/')
+@login_required
+def dashboard(request):
+    context = {'message': request.user.username}
+    return render(request, 'dashboard.html', context)
 
 # register (web)
+
+@login_required
+def logout_auth(request):
+    logout(request)
+    context = {'message': '' }
+    return render(request, 'index.html', context)
 
 def register(request):
     if 'requestcode' in request.POST:  # form is filled. if not spam, generate code and save in db, wait for email confirmation, return message
@@ -155,6 +180,8 @@ def register(request):
 # return General Status of a user as Json (income,expense)
 
 
+def reset_password(request):
+    pass
 
 
 
