@@ -135,7 +135,7 @@ def register(request):
         # duplicate email
         if User.objects.filter(email=request.POST['email']).exists():
             context = {
-                'message': 'متاسفانه این ایمیل قبلا استفاده شده است. در صورتی که این ایمیل شما است، از صفحه ورود گزینه فراموشی پسورد رو انتخاب کنین. ببخشید که فرم ذخیره نشده. درست می شه'}  # TODO: forgot password
+                'message': 'This email address has been used before. In case you have forgotten your password go to password recovery.'}  # TODO: forgot password
             # TODO: keep the form data
             return render(request, 'register.html', context)
         # if user does not exists
@@ -155,16 +155,16 @@ def register(request):
             #                     request.build_absolute_uri('/accounts/register/'), code),
             #                 tag="account request")
             #message.send()
-            message = 'ایمیلی حاوی لینک فعال سازی اکانت به شما فرستاده شده، لطفا پس از چک کردن ایمیل، روی لینک کلیک کنید.'
-            message = 'قدیم ها ایمیل فعال سازی می فرستادیم ولی الان شرکتش ما رو تحریم کرده (: پس راحت و بی دردسر'
-            body = " برای فعال کردن اکانت بستون خود روی لینک روبرو کلیک کنید: <a href=\"{}?code={}\">لینک رو به رو</a> ".format(request.build_absolute_uri('/accounts/register/'), code)
+            message = 'An activation link has been sent to your email. Please click on the link in the message.'
+            message = 'We used to send activation email but the emailing company is down right now.'
+            body = "For activating your account please click on this link : <a href=\"{}?code={}\"></a>".format(request.build_absolute_uri('/accounts/register/'), code)
             message = message + body
             context = {
                 'message': message }
             return render(request, 'index.html', context)
         else:
             context = {
-                'message': 'متاسفانه این نام کاربری قبلا استفاده شده است. از نام کاربری دیگری استفاده کنید. ببخشید که فرم ذخیره نشده. درست می شه'}  # TODO: forgot password
+                'message': 'This username has already been used. Plese use another username.'}  # TODO: forgot password
             # TODO: keep the form data
             return render(request, 'register.html', context)
     elif 'code' in request.GET:  # user clicked on code
@@ -179,12 +179,11 @@ def register(request):
             # delete the temporary activation code from db
             Passwordresetcodes.objects.filter(code=code).delete()
             context = {
-                'message': 'اکانت شما ساخته شد. توکن شما {} است. آن را ذخیره کنید چون دیگر نمایش داده نخواهد شد! جدی!'.format(
-                    this_token)}
+                'message': 'Your account was created successfully! Your token is {} . Do not lose it.'.format(this_token)}
             return render(request, 'index.html', context)
         else:
             context = {
-                'message': 'این کد فعال سازی معتبر نیست. در صورت نیاز دوباره تلاش کنید'}
+                'message': 'This activation code is not legitemate.'}
             return render(request, 'register.html', context)
     else:
         context = {'message': ''}
