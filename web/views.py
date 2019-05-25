@@ -20,6 +20,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 
 from .models import User, Token, Account, Passwordresetcodes
+from .forms import AccountForm
 
 # Create your views here.
 # from postmark import PMMail
@@ -78,8 +79,20 @@ def login_auth(request):
 #@permission_required('client.is_client', login_url='/dashboard-login/')
 @login_required
 def dashboard(request):
-    context = {'message': request.user.username}
+    if request.method == "POST":
+        form = AccountForm(request.POST)
+        if form.is_valid():
+            account = form.save(commit=False)
+            account.user = request.user
+            # account.published_date = timezone.now()
+            account.save()
+            return HttpResponseRedirect('/dashboard/')
+    else:
+        form = AccountForm()
+    context = {'form': form}
     return render(request, 'dashboard.html', context)
+
+
 
 # register (web)
 
