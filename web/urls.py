@@ -12,5 +12,7 @@ urlpatterns = [
     url(r'^accounts/logout/?$', views.logout_auth, name='logout'),
     url(r'^accounts/reset_password/?$', views.reset_password, name='reset_password'),
     url(r'^dashboard/', views.dashboard, name="dashboard"),
+    url(r'^dashboard_add_account/', views.dashboard_add_account, name="dashboard_add_account"),
+    url(r'^dashboard_edit_account/(?P<pk>\d+)/$', views.dashboard_edit_account, name="dashboard_edit_account"),
     url(r'^$', views.index, name='index'),
 ]

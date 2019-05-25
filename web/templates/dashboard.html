@@ -2,22 +2,31 @@
 {% load staticfiles %}
 
 {% block content %}
-<!-- <div class="row">
+<div class="row">
   <div class="col-lg-12">
 
 
 
     <div class="row">
+      {% for account in accounts %}
+      <div class="col-md-6">
+        <div class="panel panel-default">
+              <div class="panel-body">
+                  <a class="btn btn-default" href="{% url 'dashboard_edit_account' pk=account.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+                  <h2>{{ account.username }}</h2>
+                  <p>{{ account.password }}</p>
+              </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="row">
       <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-body">
-            <p>
-            You sucsesfully logedin.
-            Congradulation {{message}} .‍‍
-            </p>
+            <a href="{% url 'dashboard_add_account' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -25,12 +34,7 @@
 
 
   </div>
-</div> -->
+</div>
 
-  <h2>New post</h2>
-  <form method="POST" class="post-form">{% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="save btn btn-default">Save</button>
-  </form>
 
 {% endblock %}

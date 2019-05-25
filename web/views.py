@@ -75,10 +75,32 @@ def login_auth(request):
 
 
 
+@login_required
+def dashboard(request):
+    accounts = Account.objects.filter(user=request.user)
+    context = {'accounts': accounts}
+    return render(request, 'dashboard.html', context)
+
+
+@login_required
+def dashboard_edit_account(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    if request.method == "POST":
+        form = AccountForm(request.POST, instance=account)
+        if form.is_valid():
+            account = form.save(commit=False)
+            account.user = request.user
+            account.save()
+            return HttpResponseRedirect('/dashboard/')
+    else:
+        form = AccountForm(instance=account)
+    return render(request, 'dashboard_edit_account.html', {'form': form})
+
+
 # @user_passes_test(login, login_url='/accounts/login/')
 #@permission_required('client.is_client', login_url='/dashboard-login/')
 @login_required
-def dashboard(request):
+def dashboard_add_account(request):
     if request.method == "POST":
         form = AccountForm(request.POST)
         if form.is_valid():
@@ -90,7 +112,7 @@ def dashboard(request):
     else:
         form = AccountForm()
     context = {'form': form}
-    return render(request, 'dashboard.html', context)
+    return render(request, 'dashboard_add_account.html', context)
 
 
 
