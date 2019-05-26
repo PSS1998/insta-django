@@ -15,6 +15,9 @@
                   <a class="btn btn-default" href="{% url 'dashboard_edit_account' pk=account.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
                   <h2>{{ account.username }}</h2>
                   <p>{{ account.password }}</p>
+                  <form action="{% url 'account_page' pk=account.pk %}">
+                      <input type="submit" value="Manage Account" />
+                  </form>
               </div>
         </div>
       </div>

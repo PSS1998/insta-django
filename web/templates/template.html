@@ -51,6 +51,12 @@
                   <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                     <!--<li><a href="/static/todoer_release.apk">اپ اندروید</a></li>-->
+                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    {% if "/account_page/" in request.get_full_path %}
+                    {% block setting %}
+                    <li><a href="{% url 'setting' pk=key %}">Settings</a></li>
+                    {% endblock setting %}
+                    {% endif %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                     {% else %}
                     <li><a href="{% url 'register' %}">Register</a></li>

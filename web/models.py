@@ -24,3 +24,10 @@ class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
         return self.username
+
+class AccountSetting(models.Model):
+    #field ha alakian bayad dorost shan
+    tag = models.CharField(max_length=255, blank=False)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.tag

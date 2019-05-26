@@ -1,0 +1,30 @@
+{% extends "template.html"%}
+
+{% block setting %}
+    {% with key=account.pk %}
+        {{ block.super }}
+    {% endwith%}
+{% endblock setting%}
+
+{% load staticfiles %}
+
+{% block content %}
+
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <h2>{{ account.username }}</h2>
+              <p>{{ account.password }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

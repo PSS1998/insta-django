@@ -1,0 +1,21 @@
+{% extends "template.html"%}
+
+{% block setting %}
+    {% with key=account.pk %}
+        {{ block.super }}
+    {% endwith%}
+{% endblock setting%}
+
+{% load staticfiles %}
+
+{% block content %}
+
+
+<h2>{{account.username}}</h2>
+<form method="POST" class="post-form">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="save btn btn-default">Save</button>
+</form>
+
+
+{% endblock %}

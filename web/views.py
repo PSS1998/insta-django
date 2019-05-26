@@ -19,8 +19,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 
-from .models import User, Token, Account, Passwordresetcodes
-from .forms import AccountForm
+from django.http import HttpResponseForbidden
+from django.core.exceptions import PermissionDenied
+
+from .models import User, Token, Account, Passwordresetcodes, AccountSetting
+from .forms import AccountForm, AccountSettingForm
 
 # Create your views here.
 # from postmark import PMMail
@@ -72,6 +75,39 @@ def login_auth(request):
     else:
         context = {'message': ''}
         return render(request, 'login.html', context)
+
+
+
+@login_required
+def setting(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    if(account.user == request.user):
+        setting = AccountSetting.objects.filter(account=account).first()
+        if request.method == "POST":
+            form = AccountSettingForm(request.POST, instance=setting)
+            if form.is_valid():
+                setting = form.save(commit=False)
+                setting.account = account
+                setting.save()
+                return HttpResponseRedirect('/dashboard/')
+        else:
+            form = AccountSettingForm(instance=setting)
+        return render(request, 'setting_account.html', {'form': form, 'account': account})
+    else:
+        raise PermissionDenied
+        return HttpResponseForbidden()
+
+
+
+@login_required
+def account_page(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    if(account.user == request.user):
+        context = {'account': account}
+        return render(request, 'account_page.html', context)
+    else:
+        raise PermissionDenied
+        return HttpResponseForbidden()
 
 
 
