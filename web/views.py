@@ -89,7 +89,7 @@ def setting(request, pk):
                 setting = form.save(commit=False)
                 setting.account = account
                 setting.save()
-                return HttpResponseRedirect('/dashboard/')
+                return HttpResponseRedirect('/account_page/{}/'.format(pk))
         else:
             form = AccountSettingForm(instance=setting)
         return render(request, 'setting_account.html', {'form': form, 'account': account})

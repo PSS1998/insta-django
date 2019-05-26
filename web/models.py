@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 from django.utils.crypto import get_random_string
 from django.db import models
 from django.contrib.auth.models import User
+from django_mysql.models import ListCharField, ListTextField
+from django.db.models import CharField, IntegerField, TextField
 
 # Create your models here.
 
@@ -26,8 +28,21 @@ class Account(models.Model):
         return self.username
 
 class AccountSetting(models.Model):
-    #field ha alakian bayad dorost shan
-    tag = models.CharField(max_length=255, blank=False)
+    active = models.BooleanField(default=True)
+    like = models.BooleanField(default=False)
+    comment = models.BooleanField(default=False)
+    like_per_day = models.IntegerField(default=50)
+    comments_per_day = models.IntegerField(default=25)
+    tag_list = ListTextField(default=[], base_field=CharField(max_length=100), size=20,)
+    tag_blacklist = ListTextField(default=[], base_field=CharField(max_length=100), size=20,)
+    user_blacklist = ListTextField(default=[], base_field=CharField(max_length=100), size=20,)
+    max_like_for_one_tag = models.IntegerField(default=25)
+    follow_per_day = models.IntegerField(default=100)
+    follow_time = models.IntegerField(default=3600)
+    unfollow_per_day = models.IntegerField(default=25)
+    comment_list = ListTextField(default=[], base_field=CharField(max_length=100), size=20,)
+    unwanted_username_list = ListTextField(default=[], base_field=CharField(max_length=100), size=20,)
+    unfollow_whitelist = ListTextField(default=[], base_field=CharField(max_length=100), size=20,)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     def __str__(self):
-        return self.tag
+        return self.account.user.username

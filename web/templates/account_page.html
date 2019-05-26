@@ -19,6 +19,9 @@
             <div class="panel-body">
               <h2>{{ account.username }}</h2>
               <p>{{ account.password }}</p>
+              <form action="{% url 'setting' pk=account.pk %}">
+                  <input type="submit" value="Growth engine setting" />
+              </form>
             </div>
           </div>
         </div>
