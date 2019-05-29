@@ -13,9 +13,9 @@
 
   <div>
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Home</a></li>
       <li><a href="{% url 'setting' pk=account.pk %}">Growth Settings</a></li>
-      <li><a href="{% url 'report' pk=account.pk %}">Report</a></li>
+      <li class="active"><a href="{% url 'report' pk=account.pk %}">Report</a></li>
     </ul>
   </div><!-- end content -->
 
@@ -26,11 +26,8 @@
         <div class="col-md-6">
           <div class="panel panel-default">
             <div class="panel-body">
-              <h2>{{ account.username }}</h2>
-              <p>{{ account.password }}</p>
-              <form action="{% url 'setting' pk=account.pk %}">
-                  <input type="submit" value="Growth engine setting" />
-              </form>
+              <h2>{{ report.follow_number }}</h2>
+              <p>{{ report.unfollow_number }}</p>
             </div>
           </div>
         </div>

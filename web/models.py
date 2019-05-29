@@ -27,6 +27,11 @@ class Account(models.Model):
     def __str__(self):
         return self.username
 
+class AccountReport(models.Model):
+    follow_number = models.IntegerField()
+    unfollow_number = models.IntegerField()
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+
 class AccountSetting(models.Model):
     active = models.BooleanField(default=True)
     like = models.BooleanField(default=False)

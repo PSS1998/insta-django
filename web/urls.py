@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^dashboard_edit_account/(?P<pk>\d+)/$', views.dashboard_edit_account, name="dashboard_edit_account"),
     url(r'^account_page/(?P<pk>\d+)/$', views.account_page, name="account_page"),
     url(r'^account_page/(?P<pk>\d+)/settings/$', views.setting, name="setting"),
+    url(r'^account_page/(?P<pk>\d+)/report/$', views.report, name="report"),
     url(r'^$', views.index, name='index'),
 ]

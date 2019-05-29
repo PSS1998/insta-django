@@ -79,6 +79,19 @@ def login_auth(request):
 
 
 @login_required
+def report(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    if(account.user == request.user):
+        report = AccountReport.objects.filter(account=account).first()
+        return render(request, 'report_account.html', {'report': report, 'account': account})
+    else:
+        raise PermissionDenied
+        return HttpResponseForbidden()
+
+
+
+
+@login_required
 def setting(request, pk):
     account = get_object_or_404(Account, pk=pk)
     if(account.user == request.user):
