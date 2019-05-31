@@ -1,5 +1,8 @@
 from django import forms
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+
 from .models import Account, AccountSetting
 
 class AccountForm(forms.ModelForm):
@@ -11,6 +14,17 @@ class AccountForm(forms.ModelForm):
 class AccountSettingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AccountSettingForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        # self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'form-inline'
+        # self.helper.form_class = 'form-horizontal'
+        # self.helper.label_class = 'col-lg-2 col-md-2'
+        # self.helper.field_class = 'col-lg-8 col-md-8'
+        self.helper.form_method = 'post'
+        # self.helper.form_action = 'submit_survey'
+        self.helper.add_input(Submit('submit', 'Submit'))
+
         self.fields['tag_list'].help_text = "seperate each tag with comma(,)"
         self.fields['tag_blacklist'].help_text = "seperate each tag with comma(,)"
         self.fields['user_blacklist'].help_text = "seperate each tag with comma(,)"
