@@ -17,6 +17,12 @@ class AccountSettingForm(forms.ModelForm):
         self.fields['comment_list'].help_text = "seperate each tag with comma(,)"
         self.fields['unwanted_username_list'].help_text = "seperate each tag with comma(,)"
         self.fields['unfollow_whitelist'].help_text = "seperate each tag with comma(,)"
+        self.fields['tag_list'].required = False
+        self.fields['tag_blacklist'].required = False
+        self.fields['user_blacklist'].required = False
+        self.fields['comment_list'].required = False
+        self.fields['unwanted_username_list'].required = False
+        self.fields['unfollow_whitelist'].required = False
     # tag_list = forms.ModelChoseField(label='Tag List', help_text='seperate each tag with comma(,)')
 
     class Meta:

@@ -22,7 +22,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
 
-from .models import User, Token, Account, Passwordresetcodes, AccountSetting
+from .models import User, Token, Account, Passwordresetcodes, AccountSetting, AccountReport
 from .forms import AccountForm, AccountSettingForm
 
 # Create your views here.
@@ -206,7 +206,7 @@ def register(request):
             #message.send()
             message = 'An activation link has been sent to your email. Please click on the link in the message.'
             message = 'We used to send activation email but the emailing company is down right now.'
-            body = "For activating your account please click on this link : <a href=\"{}?code={}\"></a>".format(request.build_absolute_uri('/accounts/register/'), code)
+            body = "For activating your account please click on this <a href=\"{}?code={}\">link</a>".format(request.build_absolute_uri('/accounts/register/'), code)
             message = message + body
             context = {
                 'message': message }

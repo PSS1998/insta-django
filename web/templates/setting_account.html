@@ -10,12 +10,19 @@
 
 {% block content %}
 
+  <div>
+    <ul class="nav nav-tabs">
+      <li><a href="{% url 'account_page' pk=account.pk %}">Home</a></li>
+      <li class="active"><a href="{% url 'setting' pk=account.pk %}">Growth Settings</a></li>
+      <li><a href="{% url 'report' pk=account.pk %}">Report</a></li>
+    </ul>
+  </div><!-- end content -->
 
-<h2>{{account.username}}</h2>
-<form method="POST" class="post-form">{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="save btn btn-default">Save</button>
-</form>
+  <h2>{{account.username}}</h2>
+  <form method="POST" class="post-form">{% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="save btn btn-default">Save</button>
+  </form>
 
 
 {% endblock %}

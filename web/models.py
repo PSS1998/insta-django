@@ -26,10 +26,16 @@ class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
         return self.username
+    def save(self,*args,**kwargs):
+        created = not self.pk
+        super().save(*args,**kwargs)
+        if created:
+            AccountSetting.objects.create(account=self)
+            AccountReport.objects.create(account=self)
 
 class AccountReport(models.Model):
-    follow_number = models.IntegerField()
-    unfollow_number = models.IntegerField()
+    follow_number = models.IntegerField(default=0)
+    unfollow_number = models.IntegerField(default=0)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class AccountSetting(models.Model):

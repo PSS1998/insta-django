@@ -13,7 +13,7 @@
 
   <div>
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#">Home</a></li>
+      <li class="active"><a href="{% url 'account_page' pk=account.pk %}">Home</a></li>
       <li><a href="{% url 'setting' pk=account.pk %}">Growth Settings</a></li>
       <li><a href="{% url 'report' pk=account.pk %}">Report</a></li>
     </ul>
